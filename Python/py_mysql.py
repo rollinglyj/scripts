@@ -23,7 +23,7 @@ try:
       job_name = str(row[1])
       values.append(job_name[0,job_name.find('_2012')])
       print "values-------------------------------"+str(values)
-   cur_local.execute('insert into job_info values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',values)
+   cur_local.execute('insert into job_info_new values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',values)
    print "invinsible seperator line-----------------------------------"
    
    cur_local.execute('select * from job_info limit 10')
