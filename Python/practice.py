@@ -1,5 +1,7 @@
 import sys;
 
+str1 = "fdkfjdk_2013"
+print "-------------"+ str1[0:str1.find('_2013')]
 
 dict1 = {"id":11}
 print dict1["id"]
