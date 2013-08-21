@@ -295,6 +295,11 @@ def get_input_report(start_time,end_time):
     yes_file_obj_input.close()
     file_obj_input_delta.close()
     
+if __name__=='__main__':
 
-get_input_report('20130818','20130819')
-get_output_report('20130818','20130819')
+    if len(sys.argv)==3:
+        get_input_report(sys.argv[1], sys.argv[2])
+        get_output_report(sys.argv[1],sys.argv[2])
+    else:
+        get_input_report('20130818','20130819')
+        get_output_report('20130818','20130819')
