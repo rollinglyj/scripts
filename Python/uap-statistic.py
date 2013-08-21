@@ -5,7 +5,10 @@ import datetime
 
 HADOOP_CLIENT="~/Tool/hadoop-ecomon/bin/hadoop"
 
-'''dag_list=["udwetl_baidustat4uap","dag_baike","udwetl_bdclk4uap","columbus_ad_display","udwetl_fc_dorado","dag_hao123click","udwetl_houyi4uap","udwetl_holmes4uap","nova_ad_display","ps_click_union","ps_query_online","wise_ps_click_display_5","sobar"]
+#dag_list = ["udwetl_baidustat4uap","dag_baike","udwetl_bdclk4uap","columbus_ad_display","udwetl_fc_dorado","dag_hao123click","udwetl_houyi4uap","udwetl_holmes4uap","nova_ad_display","ps_click_union","ps_query_online","wise_ps_click_display_5","sobar"]
+
+dag_list = ["nova_ad_display","columbus_ad_display","ps_query_online",
+          "wise_ps_click_display_5","udwetl_baidustat4uap","udwetl_houyi4uap","ps_click_union","dag_baike","dag_hao123click","sobar","udwetl_fc_dorado","udwetl_bdclk4uap","udwetl_holmes4uap"]
 
 dag_input_dict = {
                 "udwetl_baidustat4uap":['/log/11523/baidustat_holmes_session_et2'],
@@ -40,9 +43,6 @@ dag_log_dict = {
                 "sobar":['sobar']
 }
 
-#dag_event_dict = {}
-#dag_big_event_dict = {}
-
 
 dag_output_dict = {
                 "udwetl_baidustat4uap":['/app/ns/udw/release/warehouse/udwetl_baidustat4uap_event/event_action=baidustat4uap_event'],
@@ -53,20 +53,20 @@ dag_output_dict = {
                 "dag_hao123click":['/app/ns/udw/release/warehouse/udw_event/event_action=hao123webclk',],
                 "udwetl_houyi4uap":['/app/ns/udw/release/warehouse/udwetl_houyi4uap_event/event_action=houyi4uap_event'],
                 "udwetl_holmes4uap":['/app/ns/udw/release/warehouse/udwetl_holmes4uap_event/event_action=holmes4uap_event'],
-                "nova_ad_display":['/udw/release/warehouse/udw_event/event_action=novaaddisplay',],
+                "nova_ad_display":['/app/ns/udw/release/warehouse/udw_event/event_action=novaaddisplay',],
                 "ps_click_union":['/app/ns/udw/release/warehouse/udwetl_ps_clickdata/event_action=ps_clickdata','/app/ns/udw/release/warehouse/udw_event/event_action=ps_click'],
                 "ps_query_online":['/app/ns/udw/release/warehouse/udwetl_other_webview/event_action=other_webview','/app/ns/udw/release/warehouse/udw_event/event_action=ps_query','/app/ns/udw/release/warehouse/udw_event/event_action=ps_index'],
                 "wise_ps_click_display_5":['/app/ns/udw/release/warehouse/udwetl_wisepsclick_2/event_action=wisepsclick_2','/app/ns/udw/release/warehouse/udwetl_wisepsdisplay_2/event_action=wisepsdisplay_2','/app/ns/udw/release/warehouse/udwetl_wisepsunion_anti_2/event_action=wise_session_split'],
                 "sobar":['/app/ns/udw/release/warehouse/udwetl_sobarurldata/event_action=sobarurldata']
 }
-'''
 
-dag_list        = ["udwetl_baidustat4uap","dag_baike"]
-dag_input_dict  = {"udwetl_baidustat4uap":['/log/11523/baidustat_holmes_session_et2'],"dag_baike":['baike_nginx_access_2ecomon'], }
+'''
+dag_list        = ["dag_baike","udwetl_baidustat4uap",]
+dag_input_dict  = {"udwetl_baidustat4uap":['/log/11523/baidustat_holmes_session_et2'],"dag_baike":['/log/100025586/baike_nginx_access_2ecomon']}
 dag_output_dict = {
                    "udwetl_baidustat4uap":['/app/ns/udw/release/warehouse/udwetl_baidustat4uap_event/event_action=baidustat4uap_event'],
                    "dag_baike":['/app/ns/udw/release/warehouse/udwetl_baikedummy/event_action=baikedummy','/app/ns/udw/release/warehouse/udw_event/event_action=baikeview','/app/ns/udw/release/warehouse/udw_event/event_action=baikeedit','/app/ns/udw/release/warehouse/udw_event/event_action=baikesearch','/app/ns/udw/release/warehouse/udw_event/event_action=baikeother'],}
-
+'''
 input_size_dict        = {}
 output_size_dict       = {}
 yes_input_size_dict    = {}
@@ -84,7 +84,7 @@ yes = yes.replace('-','')
 
 print "yesterday is:"+str(yes)
 
-def get_output(start_time,end_time):
+def get_output_report(start_time,end_time):
 
     print "start_time " + str(start_time)
     print "end_time" + str(end_time)
@@ -193,19 +193,18 @@ def get_output(start_time,end_time):
                         
 
 
-def uap_report():
-    cmd                            = HADOOP_CLIENT+' fs -ls /'
-   # result                        = os.popen(cmd).readlines()
-    result                         = []
-    for re in result:
-        print re
+def get_input_report(start_time,end_time):
+    if start_time!='':
+        yes = start_time
+    if end_time != '':
+        day_time=end_time
+            
 #get input log size
     for dag in dag_list:
         input_size_dict[dag]       = 0
-        output_size_dict[dag]      = 0
         delta_input_size_dict[dag] = 0
         yes_input_size_dict[dag]   = 0
-        yes_output_size_dict[dag] = 0
+
     for dag in dag_list:
         print "Current Dag is:" + str(dag)
         log_path       = dag_input_dict[dag]
@@ -267,7 +266,6 @@ def uap_report():
                     print str(dag) + " size : " + str(yes_input_size_dict[dag]) + "--first time"
     file_obj_input                           = open("input_log_size.txt",'w')
     yes_file_obj_input = open("yes_input_log_size.txt",'w');
-    file_obj_output                          = open("output_size.txt",'w')
     file_obj_input_delta                     = open("delta_input_size.txt",'w')
     file_obj_input.write(day_time)
     file_obj_input.write('\n')
@@ -295,9 +293,8 @@ def uap_report():
     
     file_obj_input.close()
     yes_file_obj_input.close()
-    file_obj_output.close()
     file_obj_input_delta.close()
     
 
-#uap_report()
-get_output('20130812','20130813')
+get_input_report('20130818','20130819')
+get_output_report('20130818','20130819')
