@@ -5,7 +5,7 @@ import datetime
 import MailClient
 from common_data import HADOOP_CLIENT,dag_list,dag_input_dict,dag_log_dict,dag_output_dict,input_size_dict,output_size_dict, yes_input_size_dict,yes_output_size_dict,delta_input_size_dict,delta_output_size_dict,dict_map_input_bytes,dict_slot_time,delta_slot_time,delta_map_input_bytes
 import common_lib
-from common_lib import get_slot_time,init_structure,print_dict
+from common_lib import get_slot_time,init_structure,print_dict,mark_data,data_to_str
 
 day_time      = time.strftime('%Y%m%d',time.localtime(time.time()))
 print "today is :"+str(day_time)
@@ -30,7 +30,7 @@ def get_output_report(base_time):
     tomorrow  = str(mkdate + datetime.timedelta(days=1))
 
     yes = yesterday.replace('-','')
-    day_time = tomorrow.replace('-','')
+    day_time = base_time.replace('-','')
     
     #print str(yes)+"--" + str(day_time)
 
@@ -118,11 +118,12 @@ def get_output_report(base_time):
         file_obj_output_delta.write('\t')
         if yes_output_size_dict[key]!=0:
             huanbi = float(output_size_dict[key]-yes_output_size_dict[key])/yes_output_size_dict[key]
-            huanbi = huanbi*100.00
-            print ("%.2f" % huanbi)
-            huanbi = str(huanbi)+"%"
+#            huanbi = huanbi*100.00
+#            print ("%.2f" % huanbi)
+#            huanbi = str(huanbi)+"%"
         else:
             huanbi = 0
+        delta_output_size_dict[key] = huanbi
         file_obj_output_delta.write(str(huanbi))
         file_obj_output_delta.write('\n')
         yes_file_obj_output.write(key);
@@ -151,7 +152,7 @@ def get_input_report(base_time):
     tomorrow  = str(mkdate + datetime.timedelta(days=1))
 
     yes = yesterday.replace('-','')
-    day_time = tomorrow.replace('-','')
+    day_time = base_time.replace('-','')
             
 #get input log size
     for dag in dag_list:
@@ -233,11 +234,12 @@ def get_input_report(base_time):
         file_obj_input_delta.write('\t')
         if yes_input_size_dict[key]!=0:
             huanbi = float(input_size_dict[key]-yes_input_size_dict[key])/yes_input_size_dict[key]
-            huanbi = huanbi*100.00
-            print ("%.2f" % huanbi)
-            huanbi = str(huanbi)+"%"
+#            huanbi = huanbi*100.00
+#            print ("%.2f" % huanbi)
+#            huanbi = str(huanbi)+"%"
         else:
             huanbi = 0
+        delta_input_size_dict[key] =huanbi
         file_obj_input_delta.write(str(huanbi))
         file_obj_input_delta.write('\n')
         yes_file_obj_input.write(key);
@@ -263,14 +265,21 @@ if __name__=='__main__':
         get_input_report('2013-08-25')
         get_output_report('2013-08-24')
 
-    
+    data = [0,0,0,0,0,0,0,0,0,0,0,0]
     mailclient   = MailClient.MailClient()
 
-    title        = 'uap-resource-'
-    from_email   = 'zhangchao08@baidu.com'
-    to_email     = 'zhangchao08@baidu.com'
-    template_id  = '24'
-
+    title       = 'uap-resource-'
+    from_email  = 'zhangchao08@baidu.com'
+    to_email    = 'zhangchao08@baidu.com'
+    template_id = '24'
+    for dag in dag_list:
+        print '#------------------#'
+        print input_size_dict[dag]
+        print delta_input_size_dict[dag]
+        print yes_output_size_dict[dag]
+        print output_size_dict[dag]
+        print delta_output_size_dict[dag]
+    
     for dag in dag_list:
         data[0]      = str(dag)
         data[1]      = str(input_size_dict[dag])
@@ -293,9 +302,13 @@ if __name__=='__main__':
             data[10] = '0'
         
         if input_size_dict[dag] != 0:
-            data[11] = str(float(dict_map_input_bytes[dat])/float(input_size_dict[dag]))
+            data[11] = str(float(dict_map_input_bytes[dag])/float(input_size_dict[dag]))
         else:
             data[11] = '0'
-        mailclient.sendBanch(from_email, to_email,title,data,"list",template_id)
+        print "data: " + str(data)
+        data_to_send = mark_data(data)
+        data_to_send = data_to_str(data_to_send)
+        print "data to send: "+ str(data_to_send)
+        mailclient.sendBanch(from_email, to_email,title,data_to_send,"list",template_id)
         
         

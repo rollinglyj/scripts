@@ -130,7 +130,60 @@ def analysis_Dag(opt,dagname):
     elif(opt=='3'):
         result = os.popen(DAG_CMD3).readlines()
         return result
-        
+
+def mark_data(data):
+    data[0]     = data[0]
+    data[1]     = round(float(data[1]),1)
+    data[2]     = mark_red_percent(data[2])
+    data[3]     = round(float(data[3]),1)
+    data[4]     = mark_red_percent(data[4])
+
+    data[5]     = round(float(data[5]),1)
+    data[6]     = mark_red_percent(data[6])
+
+    data[7]  = round(float(data[7]),1)
+    data[8]  = mark_red_percent(data[8])
+    data[9]  = round(float(data[9]),2)
+    data[10] = round(float(data[10]),2)
+    data[11] = mark_map_log_size(data[11])
+                        
+    return data
+
+def mark_map_log_size(item):
+    print str(item)+"******"
+    item = round(float(str(item)),2)
+    print item
+    print type(item)
+    if item<0.9 or item>1 :
+        ret = "<font color=\"#FF0000\">" + str(item) + "</font><br>"
+    else :
+        ret = str(item)
+    return ret
+    
+    
+    
+def mark_red_percent(item):
+    tmp         = round(float(item)*100,1)
+    if tmp > 0:
+        if tmp > 20:
+            ret = "<font color=\"#FF0000\">+" + str(tmp) + "% </font><br>"
+        else:
+            ret = "+" + str(tmp) + "%"
+    elif tmp < 0:
+        if abs(tmp) > 20:
+            ret = "<font color=\"#FF0000\">" + str(tmp) + "% </font><br>"
+        else:
+            ret = str(tmp)+"%"
+    else :
+        return '0'
+    
+    return ret
+
+def data_to_str(data):
+    for i in range(len(data)):
+        data[i] = str(data[i])
+    return data
+    
         
 if (__name__=='__main__'):
 #    re = get_cmd_result(0,'xxx');
@@ -142,8 +195,12 @@ if (__name__=='__main__'):
 #    print type(ret)
 #    ret = analysis_Dag('3','sobar')
 #    print ret
-    init_structure()
+#    init_structure()
     
-    for dag in dag_list:
-        get_slot_time(dag,sys.argv[1])
-    print_dict()
+#    for dag in dag_list:
+#        get_slot_time(dag,sys.argv[1])
+#    print_dict()
+    data = ['sobar', '173.01', '0.34114018051', '163.029934491', '-0.33705093567', '28.55', '-0.382034632035', '6.22532407407', '-0.177830836159', '27.7913242654', '0.165019363043', '0.942315094451']
+    ret  = mark_data(data)
+    ret2= mark_map_log_size(94555)
+    print ret2
