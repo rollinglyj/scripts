@@ -2,8 +2,10 @@ import sys
 import os
 import time
 import datetime
-from common_data import HADOOP_CLIENT,dag_list,dag_input_dict,dag_log_dict,dag_output_dict,input_size_dict,output_size_dict, yes_input_size_dict,yes_output_size_dict,delta_input_size_dict,delta_output_dize_dict 
-
+import MailClient
+from common_data import HADOOP_CLIENT,dag_list,dag_input_dict,dag_log_dict,dag_output_dict,input_size_dict,output_size_dict, yes_input_size_dict,yes_output_size_dict,delta_input_size_dict,delta_output_size_dict,dict_map_input_bytes,dict_slot_time,delta_slot_time,delta_map_input_bytes
+import common_lib
+from common_lib import get_slot_time,init_structure,print_dict
 
 day_time      = time.strftime('%Y%m%d',time.localtime(time.time()))
 print "today is :"+str(day_time)
@@ -38,7 +40,7 @@ def get_output_report(base_time):
     for dag in dag_list:
         output_size_dict[dag]       = 0
         yes_output_size_dict[dag]   = 0
-        delta_output_dize_dict[dag] = 0
+        delta_output_size_dict[dag] = 0
         
     
     for dag in dag_list:
@@ -249,9 +251,51 @@ def get_input_report(base_time):
     
 if __name__=='__main__':
 
+    init_structure()
+    for dag in dag_list:
+        get_slot_time(dag,sys.argv[1])
+    print_dict()
+
     if len(sys.argv)==2:
         get_input_report(sys.argv[1])
         get_output_report(sys.argv[1])
     else:
         get_input_report('2013-08-25')
         get_output_report('2013-08-24')
+
+    
+    mailclient   = MailClient.MailClient()
+
+    title        = 'uap-resource-'
+    from_email   = 'zhangchao08@baidu.com'
+    to_email     = 'zhangchao08@baidu.com'
+    template_id  = '24'
+
+    for dag in dag_list:
+        data[0]      = str(dag)
+        data[1]      = str(input_size_dict[dag])
+        data[2]      = str(delta_input_size_dict[dag])
+        data[3]      = str(dict_map_input_bytes[dag])
+        data[4]      = str(delta_map_input_bytes[dag])
+        data[5]      = str(output_size_dict[dag])
+        data[6]      = str(delta_output_size_dict[dag])
+        data[7]      = str(dict_slot_time[dag])
+        data[8]      = str(delta_slot_time[dag])
+
+        if dict_slot_time[dag] != 0:
+            data[9]  = str(float(input_size_dict[dag])/dict_slot_time[dag])
+        else :
+            data[9]  = '0'
+
+        if input_size_dict[dag] != 0 :
+            data[10] = str(float(output_size_dict[dag])/float(input_size_dict[dag]))
+        else:
+            data[10] = '0'
+        
+        if input_size_dict[dag] != 0:
+            data[11] = str(float(dict_map_input_bytes[dat])/float(input_size_dict[dag]))
+        else:
+            data[11] = '0'
+        mailclient.sendBanch(from_email, to_email,title,data,"list",template_id)
+        
+        

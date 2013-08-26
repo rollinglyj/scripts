@@ -9,6 +9,7 @@ import common_data
 import sys
 from common_data import dag_list,HADOOP_CLIENT, MYSQL_QA, dict_slot_time,dict_map_input_bytes,yes_dict_slot_time,yes_dict_map_input_bytes,delta_slot_time,delta_map_input_bytes
 
+
 def init_structure():
     for dag in dag_list:
         dict_slot_time[dag]           = 0;

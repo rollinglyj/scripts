@@ -1,6 +1,6 @@
 
-dag_list                 = ["nova_ad_display","columbus_ad_display","ps_query_online","wise_ps_click_display_5","udwetl_baidustat4uap","udwetl_houyi4uap","ps_click_union","dag_baike","dag_hao123click","sobar","udwetl_fc_dorado","udwetl_bdclk4uap","udwetl_holmes4uap"]
-#dag_list = ['udwetl_holmes4uap']
+#dag_list                 = ["nova_ad_display","columbus_ad_display","ps_query_online","wise_ps_click_display_5","udwetl_baidustat4uap","udwetl_houyi4uap","ps_click_union","dag_baike","dag_hao123click","sobar","udwetl_fc_dorado","udwetl_bdclk4uap","udwetl_holmes4uap"]
+dag_list = ['udwetl_holmes4uap']
 
 HADOOP_CLIENT = "~/Tool/hadoop-ecomon/bin/hadoop"
 MYSQL_QA = 'mysql -h10.216.121.31 -uroot -pMhxzKhl -D udwbenchmark -e "'
@@ -71,7 +71,7 @@ output_size_dict       = {}
 yes_input_size_dict    = {}
 yes_output_size_dict   = {}
 delta_input_size_dict  = {}
-delta_output_dize_dict = {}
+delta_output_size_dict = {}
 
 
 
