@@ -15,20 +15,31 @@ yes = yes.replace('-','')
 
 print "yesterday is:"+str(yes)
 
-def get_output_report(start_time,end_time):
+def get_output_report(base_time):
 
-    print "start_time " + str(start_time)
-    print "end_time" + str(end_time)
+    time_format = base_time.split('-')
+    year        = time_format[0]
+    month       = time_format[1]
+    day         = time_format[2]
+    
+    mkdate = datetime.date(int(year),int(month), int(day))
+
+    yesterday = str(mkdate - datetime.timedelta(days = 1))
+    tomorrow  = str(mkdate + datetime.timedelta(days=1))
+
+    yes = yesterday.replace('-','')
+    day_time = tomorrow.replace('-','')
+    
+    #print str(yes)+"--" + str(day_time)
+
+    
+#    print "start_time " + str(start_time)
+#    print "end_time" + str(end_time)
     for dag in dag_list:
         output_size_dict[dag]       = 0
         yes_output_size_dict[dag]   = 0
         delta_output_dize_dict[dag] = 0
-    if start_time != '':
-        print "yes"
-        yes                         = start_time
-    if end_time != '':
-        print "day"
-        day_time=end_time
+        
     
     for dag in dag_list:
         log_path       = dag_output_dict[dag]
@@ -124,11 +135,21 @@ def get_output_report(start_time,end_time):
                         
 
 
-def get_input_report(start_time,end_time):
-    if start_time!='':
-        yes = start_time
-    if end_time != '':
-        day_time=end_time
+def get_input_report(base_time):
+
+
+    time_format = base_time.split('-')
+    year        = time_format[0]
+    month       = time_format[1]
+    day         = time_format[2]
+    
+    mkdate = datetime.date(int(year),int(month), int(day))
+
+    yesterday = str(mkdate - datetime.timedelta(days = 1))
+    tomorrow  = str(mkdate + datetime.timedelta(days=1))
+
+    yes = yesterday.replace('-','')
+    day_time = tomorrow.replace('-','')
             
 #get input log size
     for dag in dag_list:
@@ -228,9 +249,9 @@ def get_input_report(start_time,end_time):
     
 if __name__=='__main__':
 
-    if len(sys.argv)==3:
-        get_input_report(sys.argv[1], sys.argv[2])
-        get_output_report(sys.argv[1],sys.argv[2])
+    if len(sys.argv)==2:
+        get_input_report(sys.argv[1])
+        get_output_report(sys.argv[1])
     else:
-        get_input_report('20130818','20130819')
-        get_output_report('20130818','20130819')
+        get_input_report('2013-08-25')
+        get_output_report('2013-08-24')

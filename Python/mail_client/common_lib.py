@@ -6,6 +6,7 @@ Time: Thu Aug 22 11:45:06 CST 2013
 import os
 import datetime
 import common_data
+import sys
 from common_data import dag_list,HADOOP_CLIENT, MYSQL_QA, dict_slot_time,dict_map_input_bytes,yes_dict_slot_time,yes_dict_map_input_bytes,delta_slot_time,delta_map_input_bytes
 
 def init_structure():
@@ -29,23 +30,30 @@ def get_slot_time(dag_name,base_time):
 
     yesterday = str(mkdate - datetime.timedelta(days = 1))
     tomorrow = str(mkdate + datetime.timedelta(days=1))
-
+    print str(yesterday)+"--" + str(tomorrow)
     yes_cmd = MYSQL_QA + 'select sum(mapinputhdfs),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+yesterday+' 00:00:00\' and partition<\''+ base_time +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
     print yes_cmd
-    cmd = MYSQL_QA + 'select sum(mapinputhdfs),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+ base_time +' 00:00:00\' and partition<\''+ tomorrow +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
+    cmd     = MYSQL_QA + 'select sum(mapinputhdfs),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+ base_time +' 00:00:00\' and partition<\''+ tomorrow +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
     print cmd
-    result        = os.popen(cmd).readlines()
+    result  = os.popen(cmd).readlines()
     results = result[0].split()
-    dict_slot_time[dag_name]=float(results[1])/(24*3600)
-    dict_map_input_bytes[dag_name]=float(results[0])/(1024*1024*1024)
+    print results[0] + "  " + results[1] + "-----"
+    if results[1] != 'NULL':
+        dict_slot_time[dag_name]=float(results[1])/(24*3600)
+    if results[0]!='NULL':
+        dict_map_input_bytes[dag_name]=float(results[0])/(1024*1024*1024)
 
-    yes_result                         = os.popen(yes_cmd).readlines()
-    yes_results                        = yes_result[0].split()
-    yes_dict_slot_time[dag_name]       = float(yes_results[1])/(24*3600)
-    yes_dict_map_input_bytes[dag_name] = float(yes_results[0])/(1024*1024*1024)
+    yes_result  = os.popen(yes_cmd).readlines()
+    yes_results = yes_result[0].split()
+    if results[1]!='NULL':
+        yes_dict_slot_time[dag_name]       = float(yes_results[1])/(24*3600)
+    if results[0] != 'NULL':
+        yes_dict_map_input_bytes[dag_name] = float(yes_results[0])/(1024*1024*1024)
 
-    delta_slot_time[dag_name]       = (float(dict_slot_time[dag_name]) - float(yes_dict_slot_time[dag_name]))/(float(yes_dict_slot_time[dag_name]))
-    delta_map_input_bytes[dag_name] = (float(dict_map_input_bytes[dag_name]) - float(yes_dict_map_input_bytes[dag_name]))/(float(yes_dict_map_input_bytes[dag_name]))
+    if yes_dict_slot_time[dag_name] != 0:
+        delta_slot_time[dag_name] = (float(dict_slot_time[dag_name]) - float(yes_dict_slot_time[dag_name]))/(float(yes_dict_slot_time[dag_name]))
+    if  yes_dict_map_input_bytes[dag_name] != 0 :
+        delta_map_input_bytes[dag_name] = (float(dict_map_input_bytes[dag_name]) - float(yes_dict_map_input_bytes[dag_name]))/(float(yes_dict_map_input_bytes[dag_name]))
 
                                                                                                             
 def print_dict():
@@ -134,6 +142,7 @@ if (__name__=='__main__'):
 #    ret = analysis_Dag('3','sobar')
 #    print ret
     init_structure()
+    
     for dag in dag_list:
-        get_slot_time(dag,'2013-08-19')
+        get_slot_time(dag,sys.argv[1])
     print_dict()
