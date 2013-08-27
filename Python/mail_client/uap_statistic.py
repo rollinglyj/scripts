@@ -12,15 +12,6 @@ from common_data import HADOOP_CLIENT,dag_list,dag_input_dict,dag_log_dict,dag_o
 import common_lib
 from common_lib import get_slot_time,init_structure,print_dict,mark_data,data_to_str
 
-day_time      = time.strftime('%Y%m%d',time.localtime(time.time()))
-print "today is :"+str(day_time)
-
-yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
-#print yesterday
-yes       = (str(yesterday))[0:10]
-yes = yes.replace('-','')
-
-print "yesterday is:"+str(yes)
 
 def get_output_report(base_time):
 
@@ -33,10 +24,12 @@ def get_output_report(base_time):
 
     yesterday = str(mkdate - datetime.timedelta(days = 1))
     tomorrow  = str(mkdate + datetime.timedelta(days=1))
+    yes_yes   = str(mkdate - datetime.timedelta(days = 2))
+    yes       = yesterday.replace('-','')
+    day_time  = base_time.replace('-','')
+    yes_yes = yes_yes.replace('-','')
 
-    yes = yesterday.replace('-','')
-    day_time = base_time.replace('-','')
-    
+    print "yes_yes " + str(yes_yes)
     #print str(yes)+"--" + str(day_time)
 
     
@@ -53,17 +46,26 @@ def get_output_report(base_time):
         for log in log_path:
             ls_cmd     = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/event_day=" + day_time +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
             yes_ls_cmd = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/event_day=" + yes +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
+
+            #handle holmes
+            if dag == 'udwetl_holmes4uap':
+                ls_cmd     = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/event_day=" + yes +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
+                yes_ls_cmd = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/event_day=" + yes_yes +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
+            
             print "current yes command is :" + str(yes_ls_cmd)
             print "current command is :" + str(ls_cmd)
             ls_cmd_re  = os.popen(ls_cmd).readlines()
             
             if ls_cmd_re:
                 print "In "+dag+ " " + str(log)+" not exist "
-                ls_cmd_re                = []
+                ls_cmd_re    = []
             else:
                 print "In "+dag+ " " + str(log)+"  exist "
-                ls_cmd_re                = []
-                get_size_cmd             = HADOOP_CLIENT + " fs -dus " + log.strip() + "/event_day=" + day_time + " | awk '{print $2}'"
+                ls_cmd_re    = []
+                get_size_cmd = HADOOP_CLIENT + " fs -dus " + log.strip() + "/event_day=" + day_time + " | awk '{print $2}'"
+                #handle holmes
+                if dag == 'udwetl_holmes4uap':
+                    get_size_cmd = HADOOP_CLIENT + " fs -dus " + log.strip() + "/event_day=" + yes + " | awk '{print $2}'"                 
                 print get_size_cmd
                 get_size_cmd_re          = os.popen(get_size_cmd).readlines()
                 print type(get_size_cmd_re)
@@ -81,14 +83,19 @@ def get_output_report(base_time):
                     output_size_dict[dag] = ToGB
                     print str(dag) + " Total size : " + str(output_size_dict[dag]) + "--first time"
 
-            yes_ls_cmd_re                     = os.popen(yes_ls_cmd).readlines()
+            yes_ls_cmd_re     = os.popen(yes_ls_cmd).readlines()
             if yes_ls_cmd_re:
                 print "In "+dag+ " " + str(log)+" not exist "
-                yes_ls_cmd_re                 = []
+                yes_ls_cmd_re = []
             else:
                 print "In "+dag+ " " + str(log)+"  exist "
-                yes_ls_cmd_re                 = []
-                get_size_cmd                  = HADOOP_CLIENT + " fs -dus " + log.strip() + "/event_day=" + yes + " | awk '{print $2}'"
+                yes_ls_cmd_re = []
+                get_size_cmd  = HADOOP_CLIENT + " fs -dus " + log.strip() + "/event_day=" + yes + " | awk '{print $2}'"
+
+                #handle holmes
+                if dag == 'udwetl_holmes4uap':
+                    get_size_cmd = HADOOP_CLIENT + " fs -dus " + log.strip() + "/event_day=" + yes_yes + " | awk '{print $2}'"
+                    
                 print get_size_cmd
                 get_size_cmd_re               = os.popen(get_size_cmd).readlines()
                 print type(get_size_cmd_re)
@@ -127,7 +134,7 @@ def get_output_report(base_time):
 #            print ("%.2f" % huanbi)
 #            huanbi = str(huanbi)+"%"
         else:
-            huanbi = 0
+            huanbi = '0.0'
         delta_output_size_dict[key] = huanbi
         file_obj_output_delta.write(str(huanbi))
         file_obj_output_delta.write('\n')
@@ -155,9 +162,12 @@ def get_input_report(base_time):
 
     yesterday = str(mkdate - datetime.timedelta(days = 1))
     tomorrow  = str(mkdate + datetime.timedelta(days=1))
-
-    yes = yesterday.replace('-','')
-    day_time = base_time.replace('-','')
+    yes_yes   = str(mkdate - datetime.timedelta(days = 2))
+    
+    yes       = yesterday.replace('-','')
+    day_time  = base_time.replace('-','')
+    yes_yes = yes_yes.replace('-','')
+    print "yes_yes " + yes_yes
             
 #get input log size
     for dag in dag_list:
@@ -172,17 +182,26 @@ def get_input_report(base_time):
             print str(dag)+":"+str(log)
             ls_cmd     = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/" + day_time +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
             yes_ls_cmd = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/" + yes +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
+            if dag=='udwetl_holmes4uap':
+                ls_cmd = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/" + yes +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
+                yes_ls_cmd = HADOOP_CLIENT+" fs -ls "+log.strip()+ "/" + yes_yes +'>exit_file 2>&1;cat exit_file|grep "No such file or directory"'
+                
             print "current yes command is :" + str(yes_ls_cmd)
             print "curren command is :" + str(ls_cmd)
             ls_cmd_re  = os.popen(ls_cmd).readlines()
             
             if ls_cmd_re:
                 print "In "+dag+ " " + str(log)+" not exist "
-                ls_cmd_re                = []
+                ls_cmd_re      = []
             else:
                 print "In "+dag+ " " + str(log)+"  exist "
-                ls_cmd_re                = []
-                get_size_cmd             = HADOOP_CLIENT + " fs -dus " + log.strip() + "/" + day_time + " | awk '{print $2}'"
+                ls_cmd_re      = []
+                get_size_cmd = HADOOP_CLIENT + " fs -dus " + log.strip() + "/" + day_time + " | awk '{print $2}'"
+
+                #handle holmes
+                if dag == 'udwetl_holmes4uap':
+                    get_size_cmd = HADOOP_CLIENT + " fs -dus " + log.strip() + "/" + yes + " | awk '{print $2}'"
+
                 print get_size_cmd
                 get_size_cmd_re          = os.popen(get_size_cmd).readlines()
                 print type(get_size_cmd_re)
@@ -200,14 +219,19 @@ def get_input_report(base_time):
                     input_size_dict[dag] = ToGB
                     print str(dag) + " size : " + str(input_size_dict[dag]) + "--first time"
 
-            yes_ls_cmd_re                    = os.popen(yes_ls_cmd).readlines()
+            yes_ls_cmd_re     = os.popen(yes_ls_cmd).readlines()
             if yes_ls_cmd_re:
                 print "In "+dag+ " " + str(log)+" not exist "
-                yes_ls_cmd_re                = []
+                yes_ls_cmd_re = []
             else:
                 print "In "+dag+ " " + str(log)+"  exist "
-                yes_ls_cmd_re                = []
-                get_size_cmd                 = HADOOP_CLIENT + " fs -dus " + log.strip() + "/" + yes + " | awk '{print $2}'"
+                yes_ls_cmd_re = []
+                get_size_cmd  = HADOOP_CLIENT + " fs -dus " + log.strip() + "/" + yes + " | awk '{print $2}'"
+
+                #handle holmes
+                if dag == 'udwetl_holmes4uap':
+                    get_size_cmd  = HADOOP_CLIENT + " fs -dus " + log.strip() + "/" + yes_yes + " | awk '{print $2}'"
+
                 print get_size_cmd
                 get_size_cmd_re              = os.popen(get_size_cmd).readlines()
                 print type(get_size_cmd_re)
@@ -243,7 +267,7 @@ def get_input_report(base_time):
 #            print ("%.2f" % huanbi)
 #            huanbi = str(huanbi)+"%"
         else:
-            huanbi = 0
+            huanbi = '0.0'
         delta_input_size_dict[key] =huanbi
         file_obj_input_delta.write(str(huanbi))
         file_obj_input_delta.write('\n')
@@ -267,8 +291,8 @@ if __name__=='__main__':
         get_input_report(sys.argv[1])
         get_output_report(sys.argv[1])
     else:
-        get_input_report('2013-08-25')
-        get_output_report('2013-08-24')
+        get_input_report('2013-08-26')
+        get_output_report('2013-08-26')
     
     data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     mailclient   = MailClient.MailClient()
