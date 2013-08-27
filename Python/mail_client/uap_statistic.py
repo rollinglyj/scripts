@@ -1,3 +1,8 @@
+'''
+Author: justinzhang
+Email:  uestczhangchao@gmail.com/zhangchao08@baidu.com
+Time: Thu Aug 22 11:45:06 CST 2013
+'''
 import sys
 import os
 import time
@@ -264,11 +269,11 @@ if __name__=='__main__':
     else:
         get_input_report('2013-08-25')
         get_output_report('2013-08-24')
-
-    data = [0,0,0,0,0,0,0,0,0,0,0,0]
+    
+    data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     mailclient   = MailClient.MailClient()
 
-    title       = 'uap-resource-'
+    title = '[UDW Statistic] The Efficient Bill of UAP Mission [Mission Finish Time: '+str(sys.argv[1])+' ]'
     from_email  = 'zhangchao08@baidu.com'
     to_email    = 'zhangchao08@baidu.com'
     template_id = '24'
@@ -279,7 +284,15 @@ if __name__=='__main__':
         print yes_output_size_dict[dag]
         print output_size_dict[dag]
         print delta_output_size_dict[dag]
-    
+
+    for dag in dag_list:
+        data[12] = data[12] + float(input_size_dict[dag]) + float(output_size_dict[dag])
+        data[13] = data[13] + float(input_size_dict[dag])
+        data[14] = data[14] + float(output_size_dict[dag])
+    d12 = float(data[12])/(1024)
+    d13     = float(data[13])/(1024)
+    d14 = float(data[14])/(1024)
+        
     for dag in dag_list:
         data[0]      = str(dag)
         data[1]      = str(input_size_dict[dag])
@@ -306,6 +319,9 @@ if __name__=='__main__':
         else:
             data[11] = '0'
         print "data: " + str(data)
+        data[12]     = d12
+        data[13]     = d13
+        data[14]     = d14
         data_to_send = mark_data(data)
         data_to_send = data_to_str(data_to_send)
         print "data to send: "+ str(data_to_send)

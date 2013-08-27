@@ -1,6 +1,6 @@
 '''
 Author: justinzhang
-Email:  uestczhangchao@gmail.com
+Email:  uestczhangchao@gmail.com/zhangchao08@baidu.com
 Time: Thu Aug 22 11:45:06 CST 2013
 '''
 import os
@@ -143,27 +143,31 @@ def mark_data(data):
 
     data[7]  = round(float(data[7]),1)
     data[8]  = mark_red_percent(data[8])
-    data[9]  = round(float(data[9]),2)
-    data[10] = round(float(data[10]),2)
+    data[9]  = two_decimal_num(data[9])
+    data[10] = two_decimal_num(data[10])
     data[11] = mark_map_log_size(data[11])
-                        
+
+    data[12] = '<font color="red" size="5">'+three_decimal_num(data[12])+'</font>'
+    data[13] = '<font color="green" size="5">'+three_decimal_num(data[13])+'</font>'
+    data[14] = '<font color="green" size="5">'+three_decimal_num(data[14])+'</font>'
     return data
 
 def mark_map_log_size(item):
     print str(item)+"******"
-    item = round(float(str(item)),2)
+    item = float(two_decimal_num(float(item)))
     print item
     print type(item)
     if item<0.9 or item>1 :
-        ret = "<font color=\"#FF0000\">" + str(item) + "</font><br>"
+        ret = "<font color=\"#FF0000\">" + two_decimal_num(item) + "</font><br>"
     else :
-        ret = str(item)
+        ret = two_decimal_num(item)
     return ret
     
     
     
 def mark_red_percent(item):
-    tmp         = round(float(item)*100,1)
+    tmp = round(float(item)*100,1)
+    
     if tmp > 0:
         if tmp > 20:
             ret = "<font color=\"#FF0000\">+" + str(tmp) + "% </font><br>"
@@ -183,7 +187,13 @@ def data_to_str(data):
     for i in range(len(data)):
         data[i] = str(data[i])
     return data
-    
+
+def two_decimal_num(float_number):
+    return '{0:.2f}'.format(float(float_number))
+
+def three_decimal_num(float_number):
+    return '{0:.3f}'.format(float(float_number))
+
         
 if (__name__=='__main__'):
 #    re = get_cmd_result(0,'xxx');
@@ -200,7 +210,14 @@ if (__name__=='__main__'):
 #    for dag in dag_list:
 #        get_slot_time(dag,sys.argv[1])
 #    print_dict()
-    data = ['sobar', '173.01', '0.34114018051', '163.029934491', '-0.33705093567', '28.55', '-0.382034632035', '6.22532407407', '-0.177830836159', '27.7913242654', '0.165019363043', '0.942315094451']
-    ret  = mark_data(data)
-    ret2= mark_map_log_size(94555)
-    print ret2
+    data        = ['sobar', '173.01', '0.34114018051', '163.029934491', '-0.33705093567', '28.55', '-0.382034632035', '6.22532407407', '-0.177830836159', '27.7913242654', '0.165019363043', '0.942315094451']
+#    ret        = mark_data(data)
+#    ret2       = mark_map_log_size(94555)
+#    print ret2
+    ret_decimal = two_decimal_num(1.6)
+    ret_map_log = mark_map_log_size(0.9)
+    print type(ret_map_log)
+    print ret_map_log
+    print three_decimal_num(1)
+
+     
