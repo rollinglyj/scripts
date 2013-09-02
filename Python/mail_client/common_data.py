@@ -62,7 +62,7 @@ dag_output_dict = {
                 "udwetl_houyi4uap":['/app/ns/udw/release/warehouse/udwetl_houyi4uap_event/event_action=houyi4uap_event'],
                 "udwetl_holmes4uap":['/app/ns/udw/release/warehouse/udwetl_holmes4uap_event/event_action=holmes4uap_event'],
                 "nova_ad_display":['/app/ns/udw/release/warehouse/udw_event/event_action=novaaddisplay',],
-                "ps_click_union":['/app/ns/udw/release/warehouse/udwetl_ps_clickdata/event_action=ps_clickdata','/app/ns/udw/release/warehouse/udw_event/event_action=ps_click'],
+                "ps_click_union":['/app/ns/udw/release/warehouse/udw_event/event_action=ps_click'],
                 "ps_query_online":['/app/ns/udw/release/warehouse/udwetl_other_webview/event_action=other_webview','/app/ns/udw/release/warehouse/udw_event/event_action=ps_query','/app/ns/udw/release/warehouse/udw_event/event_action=ps_index'],
                 "wise_ps_click_display_5":['/app/ns/udw/release/warehouse/udwetl_wisepsclick_2/event_action=wisepsclick_2','/app/ns/udw/release/warehouse/udwetl_wisepsdisplay_2/event_action=wisepsdisplay_2','/app/ns/udw/release/warehouse/udwetl_wisepsunion_anti_2/event_action=wise_session_split'],
                 "sobar":['/app/ns/udw/release/warehouse/udwetl_sobarurldata/event_action=sobarurldata']

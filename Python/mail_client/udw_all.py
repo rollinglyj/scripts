@@ -1,5 +1,6 @@
 import common_lib
 import os
+import sys
 import get_log_path
 from common_lib import analysis_Dag,HADOOP_CLIENT,get_per_path_size
 from get_log_path import get_log_path
@@ -54,6 +55,12 @@ def get_udw_log_size(datetime):
     return dag_log_size
 
 if __name__ == "__main__":
-    ret = get_udw_log_size("20130827")
+    if len(sys.argv) == 2:
+        ret = get_udw_log_size(sys.argv[1])
+    else:
+        ret = get_udw_log_size("20130827")
+    total_size = 0
     for (k,v) in ret.items():
+        total_size = total_size + ret[k]
         print "dict[%s]" % k,v
+    print "Total UDW Log Size is " + str(total_size)
