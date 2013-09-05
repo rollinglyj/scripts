@@ -35,15 +35,15 @@ def get_slot_time(dag_name,base_time):
     yes_yes = str(mkdate - datetime.timedelta(days=2))
     print str(yesterday)+"--" + str(tomorrow) + "---" + str(yes_yes)
 
-    yes_cmd = MYSQL_QA + 'select sum(mapinputhdfs),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+yesterday+' 00:00:00\' and partition<\''+ base_time +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
+    yes_cmd = MYSQL_QA + 'select sum(mapinputbytes),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+yesterday+' 00:00:00\' and partition<\''+ base_time +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
 
-    cmd     = MYSQL_QA + 'select sum(mapinputhdfs),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+ base_time +' 00:00:00\' and partition<\''+ tomorrow +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
+    cmd     = MYSQL_QA + 'select sum(mapinputbytes),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+ base_time +' 00:00:00\' and partition<\''+ tomorrow +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
 
     #handle holmes
     if dag_name == 'udwetl_holmes4uap':
-        yes_cmd = MYSQL_QA + 'select sum(mapinputhdfs),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+yes_yes+' 00:00:00\' and partition<\''+ yes +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
+        yes_cmd = MYSQL_QA + 'select sum(mapinputbytes),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+yes_yes+' 00:00:00\' and partition<\''+ yes +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
     
-        cmd     = MYSQL_QA + 'select sum(mapinputhdfs),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+ yes +' 00:00:00\' and partition<\''+ base_time +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
+        cmd     = MYSQL_QA + 'select sum(mapinputbytes),sum(totalslottime) from TblDag td,TblJobComplete tj where td.jobid=tj.jobid and dagname=\''+ dag_name +'\' and partition>=\''+ yes +' 00:00:00\' and partition<\''+ base_time +' 00:00:00\';"|tail -1|awk -F\'\\t\' \'{print $1,$2}\''
 
     print yes_cmd
     print cmd
@@ -57,10 +57,10 @@ def get_slot_time(dag_name,base_time):
 
     yes_result  = os.popen(yes_cmd).readlines()
     yes_results = yes_result[0].split()
-    print results[0] + "  " + results[1] + "-----"
-    if results[1]!='NULL':
+    print yes_results[0] + "  " + yes_results[1] + "-----"
+    if yes_results[1]!='NULL':
         yes_dict_slot_time[dag_name]       = float(yes_results[1])/(24*3600)
-    if results[0] != 'NULL':
+    if yes_results[0] != 'NULL':
         yes_dict_map_input_bytes[dag_name] = float(yes_results[0])/(1024*1024*1024)
 
     if yes_dict_slot_time[dag_name] != 0:

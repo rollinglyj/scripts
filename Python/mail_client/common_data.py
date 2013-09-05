@@ -1,6 +1,6 @@
 
 dag_list                 = ["nova_ad_display","columbus_ad_display","ps_query_online","wise_ps_click_display_5","udwetl_baidustat4uap","udwetl_houyi4uap","ps_click_union","dag_baike","dag_hao123click","sobar","udwetl_fc_dorado","udwetl_bdclk4uap","udwetl_holmes4uap"]
-#dag_list = ['udwetl_holmes4uap','sobar']
+#dag_list = ['udwetl_holmes4uap','sobar']jj
 #dag_list = ['udwetl_bdclk4uap']
 #dag_list = ['udwetl_holmes4uap']
 
