@@ -1,0 +1,74 @@
+# .bashrc
+
+# User specific aliases and functions
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+[[ -s "~/.jumbo/etc/bashrc" ]] && source "~/.jumbo/etc/bashrc"
+
+[[ -s "/home/users/zhangchao08/.jumbo/etc/bashrc" ]] && source "/home/users/zhangchao08/.jumbo/etc/bashrc"
+
+ANT_HOME=""
+export LANG=en_US.UTF-8
+export TERM=linux
+alias php="~/nimitz/php5/bin/php"
+alias phpunit="~/nimitz/php5/bin/phpunit"
+alias hadoop-ston="~/Tool/hadoop-ston/hadoop/bin/hadoop"
+alias hadoop-stoff="~/Tool/hadoop-stoff/bin/hadoop"
+alias hive="~/Tool/hive_udw2/bin/hive"
+export HADOOP_HOME="/home/users/zhangchao08/hadoop-client/hadoop"
+export HADOOP_CLASSPATH="/home/users/zhangchao08/hadoop-client/"
+export JAVA_HOME="/home/users/zhangchao08/hadoop-client/java6/"
+alias comake="~/CVS/comake_2-1-3-2304_PD_BL/comake2"
+alias hadoop-ecomon="~/Tool/hadoop-ecomon/bin/hadoop"
+alias hadoop-udw-log="~/Tool/hadoop-udw-log/bin/hadoop"
+alias ctags="~/program_files/Exuberant/bin/ctags"
+alias cscope="~/program_files/cscope/bin/cscope"
+alias grep='grep --color=auto'
+
+#alias emacs="~/program_files/emacs-24.2/bin/emacs"
+alias emacs="~/program_files/emacs-24-3/bin/emacs"
+alias etags="~/program_files/emacs-24.2/bin/etags"
+
+alias gtags="~/program_files/global-6.2.7/bin/gtags"
+alias global="~/program_files/global-6.2.7/bin/global"
+#alias tar="~/program_files/tar-1.26/bin/tar"
+#alias xz="~/program_files/xz-5.0.4/bin/xz"
+alias m4="~/program_files/m4/bin/m4"
+alias flex="~/program_files/flex/bin/flex"
+alias bison="~/program_files/bison/bin/bison"
+alias hadoop-rt-off="~/hadoop-client/hadoop/bin/hadoop"
+alias protoc="/home/users/zhangchao08/oceanjustin/CVS/third-64/protobuf/bin/protoc"
+alias hadoop-nanjing="~/Tool/hadoop-nanjing/bin/hadoop"
+alias hadoop-rt-online="/home/users/zhangchao08/Tool/hadoop-rt-online/hadoop"
+alias hadoop-nmg="/home/users/zhangchao08/disk1/Tools/hadoop_nmg/hadoop/bin/hadoop"
+alias hadoop-ecomoff="~/disk1/Tools/ecom-off/hadoop-client/hadoop/bin/hadoop"
+alias mysql-dc="mysql -h10.220.156.34 -P3306 -udc_user -pdc_user"
+alias ant="/home/users/zhangchao08/disk1/Tools/program_files/apache-ant-1.9.3/bin/ant"
+
+export PATH=$PATH:/home/users/zhangchao08/disk1/Tools/cppchk
+export PATH=$PATH:~/Tool/shell_command/
+export PATH=$PATH:~/program_files/idutils-4-6/bin/
+export PATH=$PATH:~/program_files/m4/bin/
+export PATH=$PATH:~/program_files/protocol_buffer/bin
+export PATH=$PATH:~/Tool/
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/program_files/protocol_buffer/lib
+export PKG_CONFIG_PATH=~/program_files/protocol_buffer/lib/pkgconfig/
+export PATH=$PATH:/sbin/
+export PATH=$PATH:/home/users/zhangchao08/program_files/apache/bin/
+
+#for rt_select library
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/CVS/inf/computing/dstream/output/pesdk/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/oceanjustin/CVS/inf/budw/computing/dstream/output/pesdk/lib
+export PATH=$PATH:/home/users/zhangchao08/.jumbo/bin/mysql
+#export PATH=$PATH:/home/users/zhangchao08/program_files/php/bin
+export PATH=$PATH:/home/users/zhangchao08/program_files/tcpdump/sbin
+export PATH=$PATH:$HADOOP_HOME/bin/:$JAVA_HOME/bin
+export CLASSPATH=".:/home/users/zhangchao08/program_files/antlr/antlr-4.2.2-complete.jar:/home/users/zhangchao08/program_files/antlr/ST-4.0.8.jar:$CLASSPATH"
+
+alias antlr4='java -jar /home/users/zhangchao08/program_files/antlr/antlr-4.2.2-complete.jar'
+alias grun='java org.antlr.v4.runtime.misc.TestRig'
