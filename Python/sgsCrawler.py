@@ -10,7 +10,7 @@ import datetime
 
 def getFirstPage(formData, url, savedFile):
     crawlCmd = 'wget --post-data ' +"'"+ formData + "' " + url + ' -O '  + savedFile + '> log.cmd 2>&1;'
-    #print crawlCmd
+    print crawlCmd
     crawlCmdRe = os.popen(crawlCmd).readlines()
 
 def getSecondPage(formData, url, savedFile, refUrl):
@@ -20,7 +20,6 @@ def getSecondPage(formData, url, savedFile, refUrl):
 
 
 if __name__ == '__main__':
-
     if len(sys.argv)==5:
         formData = sys.argv[1]
         url = sys.argv[2]
