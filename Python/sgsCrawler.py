@@ -19,14 +19,18 @@ def getSecondPage(formData, url, savedFile, refUrl):
     crawlCmdRe = os.popen(crawlCmd).readlines()
 
 
-
-
 if __name__ == '__main__':
-    formData = sys.argv[1]
-    url = sys.argv[2]
-    savedFile = sys.argv[3]
-    refUrl = sys.argv[4]
-    #getFirstPage(formData, url, savedFile)
-    getSecondPage(formData, url, savedFile, refUrl)
-    
 
+    if len(sys.argv)==5:
+        formData = sys.argv[1]
+        url = sys.argv[2]
+        savedFile = sys.argv[3]
+        refUrl = sys.argv[4]
+        getSecondPage(formData, url, savedFile, refUrl)
+    elif len(sys.argv)==4:
+        formData = sys.argv[1]
+        url = sys.argv[2]
+        savedFile = sys.argv[3]
+        getFirstPage(formData, url, savedFile)
+    else:
+        print "Usage: Python sgsCrawler.py <formData> <URL> <saveDFile> [<refUrl>]"
