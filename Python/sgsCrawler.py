@@ -10,8 +10,12 @@ import datetime
 
 def getFirstPage(formData, url, savedFile):
     crawlCmd = 'wget --post-data ' +"'"+ formData + "' " + url + ' -O '  + savedFile + '> log.cmd 2>&1;'
-    print crawlCmd
-    crawlCmdRe = os.popen(crawlCmd).readlines()
+    parseCmd = 'wget --post-data ' +"'"+ formData + "' " + url + ' -O '  + '- -q | ' + 'grep "<a href" | grep viewDetail | '+ "awk '{print $3}' | awk -F'=' '{print $2}' |"+' awk -F\\"'+" '{print $2}' | awk -F'(' '{print $2}' | awk -F\\' '{print $2}'"
+#    print crawlCmd
+    print parseCmd
+#    crawlCmdRe = os.popen(crawlCmd).readlines()
+    parseCmdRe = os.popen(parseCmd).readlines()
+    print parseCmdRe
 
 def getSecondPage(formData, url, savedFile, refUrl):
     crawlCmd = 'wget --post-data ' + "'" + formData + "' " + "--referer " + refUrl + " " + url + ' -O ' + savedFile + ' > log2.cmd 2>&1;'
