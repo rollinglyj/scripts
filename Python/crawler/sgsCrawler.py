@@ -35,7 +35,9 @@ def getSecondPage(formData, url, savedFile, refUrl):
     newList = []
     for li in crawlCmdRe:
         print i
-        newList.append(li.strip().replace(':',''))
+        tmp = li.strip().replace(':','')
+        tmp = tmp.replace('&nbsp;','')
+        newList.append(tmp)
         print unquote(newList[i])
         i = i + 1
     print '--invisible divider-----'
@@ -44,20 +46,21 @@ def getSecondPage(formData, url, savedFile, refUrl):
     print quote('企业名称')
     print quote('企业名称:')
     print newList.index('企业名称')
+
     corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    print corpInfo
+    corpInfo['注册号'] = newList[newList.index('注册号') + 1]
+    corpInfo['法定代表人'] = newList[newList.index('法定代表人') + 1]
+    corpInfo['住所'] = newList[newList.index('住所') + 1]
+    corpInfo['注册资金'] = newList[newList.index('注册资金') + 1]
+    corpInfo['经济性质'] = newList[newList.index('经济性质') + 1]
+    corpInfo['企业状态'] = newList[newList.index('企业状态') + 1]
+    corpInfo['经营方式'] = newList[newList.index('经营方式') + 1]
+    corpInfo['登记机关'] = newList[newList.index('登记机关') + 1]
+    corpInfo['受理机关'] = newList[newList.index('受理机关') + 1]
+    corpInfo['经营范围'] = newList[newList.index('经营范围') + 1]
+
+    for (k, v) in corpInfo.items():
+        print '['+unquote(k) +':' + unquote(v) + ']'
 
 
 
