@@ -34,14 +34,11 @@ def getSecondPage(formData, url, savedFile, refUrl):
     print crawlCmdRe
     newList = []
     for li in crawlCmdRe:
-        print i
         tmp = li.strip().replace(':','')
         tmp = tmp.replace('&nbsp;','')
         newList.append(tmp)
-        print unquote(newList[i])
-        i = i + 1
-    corpInfo={}
 
+    corpInfo={}
     corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
     corpInfo['注册号'] = newList[newList.index('注册号') + 1]
     corpInfo['法定代表人'] = newList[newList.index('法定代表人') + 1]
