@@ -40,12 +40,7 @@ def getSecondPage(formData, url, savedFile, refUrl):
         newList.append(tmp)
         print unquote(newList[i])
         i = i + 1
-    print '--invisible divider-----'
-    print newList
     corpInfo={}
-    print quote('企业名称')
-    print quote('企业名称:')
-    print newList.index('企业名称')
 
     corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
     corpInfo['注册号'] = newList[newList.index('注册号') + 1]
