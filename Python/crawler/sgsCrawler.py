@@ -21,9 +21,12 @@ def getFirstPage(formData, url, savedFile):
 
 
 def getSecondPage(formData, url, savedFile, refUrl):
-    crawlCmd = 'wget --post-data ' + "'" + formData + "' " + "--referer " + refUrl + " " + url + ' -O ' + savedFile + ' > log2.cmd 2>&1;'
-    print crawlCmd
-    crawlCmdRe = os.popen(crawlCmd).readlines()
+#    crawlCmd = 'wget --post-data ' + "'" + formData + "' " + "--referer " + refUrl + " " + url + ' -O ' + savedFile + ' > log2.cmd 2>&1;'
+    crawlCmd2 = 'wget --post-data ' + "'" + formData + "' " + "--referer " + refUrl + " " + url + ' -O ' + '- -q |' + "grep '<td' | sed 's/<[^<]*>//g'" 
+    print crawlCmd2
+    crawlCmdRe = os.popen(crawlCmd2).readlines()
+    print crawlCmdRe
+
 
 
 if __name__ == '__main__':
