@@ -5,12 +5,15 @@ Author: justinzhang
 Email:  uestczhangchao@gmail.com/zhangchao3@unionpay.com
 2014-7-24 9:44 Thursday
 '''
+import MySQLdb
 import sys
 import os
 import time
 import datetime
 from urllib import unquote
 from urllib import quote
+
+
 
 def getFirstPage(formData, url, savedFile):
     crawlCmd = 'wget --post-data ' +"'"+ formData + "' " + url + ' -O '  + savedFile + '> log.cmd 2>&1;'
