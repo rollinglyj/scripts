@@ -1,3 +1,5 @@
+#!/usr/bin/python  
+#-*-coding:utf-8-*- 
 '''
 Author: justinzhang
 Email:  uestczhangchao@gmail.com/zhangchao3@unionpay.com
@@ -7,6 +9,8 @@ import sys
 import os
 import time
 import datetime
+from urllib import unquote
+from urllib import quote
 
 def getFirstPage(formData, url, savedFile):
     crawlCmd = 'wget --post-data ' +"'"+ formData + "' " + url + ' -O '  + savedFile + '> log.cmd 2>&1;'
@@ -25,7 +29,35 @@ def getSecondPage(formData, url, savedFile, refUrl):
     crawlCmd2 = 'wget --post-data ' + "'" + formData + "' " + "--referer " + refUrl + " " + url + ' -O ' + '- -q |' + "grep '<td' | sed 's/<[^<]*>//g'" 
     print crawlCmd2
     crawlCmdRe = os.popen(crawlCmd2).readlines()
+    strs = unquote(''.join(crawlCmdRe))
+    i = 0
     print crawlCmdRe
+    newList = []
+    for li in crawlCmdRe:
+        print i
+        newList.append(li.strip().replace(':',''))
+        print unquote(newList[i])
+        i = i + 1
+    print '--invisible divider-----'
+    print newList
+    corpInfo={}
+    print quote('企业名称')
+    print quote('企业名称:')
+    print newList.index('企业名称')
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
+    print corpInfo
 
 
 
