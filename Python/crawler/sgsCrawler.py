@@ -1,9 +1,12 @@
 #!/usr/bin/python  
 #-*-coding:utf-8-*- 
+
 '''
+
 Author: justinzhang
 Email:  uestczhangchao@gmail.com/zhangchao3@unionpay.com
 2014-7-24 9:44 Thursday
+
 '''
 import MySQLdb
 import sys
@@ -14,19 +17,29 @@ from urllib import unquote
 from urllib import quote
 from common_data import firstPageUrl, secondPageUrl, refUrl
 
+
+'''
+Get detail corp info through etpsId
+'''
+def getInfoByEtpsId(etpsId):
+    formData = 'etpsId=' + etpsId
+    url = secondPageUrl
+    savedFile="dumm2.txt"
+    retMap = getSecondPage(formData, url, savedFile, refUrl)
+    
+
 '''
 This function is used to get corp info by corpName.
-step1: get etpid list
-step2: using etpid to get the finial result.
-
+get etpsid list
+@Return: List
 '''
 def getByCorpName(corpName):
     formData = 'searchType=1&keyWords='+quote(corpName)
     url = firstPageUrl
     savedFile = "dummy.txt"
-    reList = getFirstPage(formData, url, savedFile)
-    print reList
-    
+    etpsIdList = getFirstPage(formData, url, savedFile)
+    print etpsIdList
+    return etpsIdList
 
 def getFirstPage(formData, url, savedFile):
     etpsIdList=[]
@@ -38,7 +51,7 @@ def getFirstPage(formData, url, savedFile):
     parseCmdRe = os.popen(parseCmd).readlines()
     for id in parseCmdRe:
 #        print id.strip()
-        etpsIdList.append(id)
+        etpsIdList.append(id.strip())
     return etpsIdList
 #    print parseCmdRe
 
@@ -88,6 +101,7 @@ if __name__ == '__main__':
         savedFile = sys.argv[3]
         getFirstPage(formData, url, savedFile)
     elif len(sys.argv)==2:
-        getByCorpName(sys.argv[1])
+#        getByCorpName(sys.argv[1])
+        getInfoByEtpsId(sys.argv[1])
     else:
         print "Usage: Python sgsCrawler.py <formData> <URL> <saveDFile> [<refUrl>]"
