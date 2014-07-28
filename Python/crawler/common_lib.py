@@ -36,9 +36,7 @@ def insertDB(dictData):
             for i in row:
                 print str(i)+ " ",
             print
-
         values = []
-
         values.append(dictData[corpName])
         values.append(dictData[registerId])
         values.append(dictData[legalRepre])

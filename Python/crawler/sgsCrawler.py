@@ -16,7 +16,13 @@ import datetime
 from urllib import unquote
 from urllib import quote
 from common_data import *
+from common_lib import *
 
+def etlToDB(corpName):
+    etpsIdList = getByCorpName(corpName)
+    for id in etpsIdList:
+        dictInfo = getInfoByEtpsId(id)
+        insertDB(dictInfo)
 
 '''
 Get detail corp info through etpsId
