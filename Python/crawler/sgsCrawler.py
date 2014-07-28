@@ -12,10 +12,24 @@ import time
 import datetime
 from urllib import unquote
 from urllib import quote
+from common_data import firstPageUrl, secondPageUrl, refUrl
 
+'''
+This function is used to get corp info by corpName.
+step1: get etpid list
+step2: using etpid to get the finial result.
 
+'''
+def getByCorpName(corpName):
+    formData = 'searchType=1&keyWords='+quote(corpName)
+    url = firstPageUrl
+    savedFile = "dummy.txt"
+    reList = getFirstPage(formData, url, savedFile)
+    print reList
+    
 
 def getFirstPage(formData, url, savedFile):
+    etpsIdList=[]
     crawlCmd = 'wget --post-data ' +"'"+ formData + "' " + url + ' -O '  + savedFile + '> log.cmd 2>&1;'
     parseCmd = 'wget --post-data ' +"'"+ formData + "' " + url + ' -O '  + '- -q | ' + 'grep "<a href" | grep viewDetail | '+ "awk '{print $3}' | awk -F'=' '{print $2}' |"+' awk -F\\"'+" '{print $2}' | awk -F'(' '{print $2}' | awk -F\\' '{print $2}'"
 #    print crawlCmd
@@ -23,7 +37,9 @@ def getFirstPage(formData, url, savedFile):
 #    crawlCmdRe = os.popen(crawlCmd).readlines()
     parseCmdRe = os.popen(parseCmd).readlines()
     for id in parseCmdRe:
-        print id.strip()
+#        print id.strip()
+        etpsIdList.append(id)
+    return etpsIdList
 #    print parseCmdRe
 
 
@@ -71,5 +87,7 @@ if __name__ == '__main__':
         url = sys.argv[2]
         savedFile = sys.argv[3]
         getFirstPage(formData, url, savedFile)
+    elif len(sys.argv)==2:
+        getByCorpName(sys.argv[1])
     else:
         print "Usage: Python sgsCrawler.py <formData> <URL> <saveDFile> [<refUrl>]"
