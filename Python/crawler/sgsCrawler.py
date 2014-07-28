@@ -15,9 +15,7 @@ import time
 import datetime
 from urllib import unquote
 from urllib import quote
-from common_data import firstPageUrl, secondPageUrl, refUrl,corpName,registerId,\
-legalRepre,residence,registerCapital,economicNature,corpState,businessMode,\
-registerAutho,administraveAutho,businessScope
+from common_data import *
 
 
 '''
