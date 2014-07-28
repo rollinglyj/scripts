@@ -15,17 +15,21 @@ import time
 import datetime
 from urllib import unquote
 from urllib import quote
-from common_data import firstPageUrl, secondPageUrl, refUrl
+from common_data import firstPageUrl, secondPageUrl, refUrl,corpName,registerId,\
+legalRepre,residence,registerCapital,economicNature,corpState,businessMode,\
+registerAutho,administraveAutho,businessScope
 
 
 '''
 Get detail corp info through etpsId
+@return: map
 '''
 def getInfoByEtpsId(etpsId):
     formData = 'etpsId=' + etpsId
     url = secondPageUrl
     savedFile="dumm2.txt"
     retMap = getSecondPage(formData, url, savedFile, refUrl)
+    return retMap
     
 
 '''
@@ -71,17 +75,17 @@ def getSecondPage(formData, url, savedFile, refUrl):
         newList.append(tmp)
 
     corpInfo={}
-    corpInfo['企业名称'] = newList[newList.index('企业名称') + 1]
-    corpInfo['注册号'] = newList[newList.index('注册号') + 1]
-    corpInfo['法定代表人'] = newList[newList.index('法定代表人') + 1]
-    corpInfo['住所'] = newList[newList.index('住所') + 1]
-    corpInfo['注册资金'] = newList[newList.index('注册资金') + 1]
-    corpInfo['经济性质'] = newList[newList.index('经济性质') + 1]
-    corpInfo['企业状态'] = newList[newList.index('企业状态') + 1]
-    corpInfo['经营方式'] = newList[newList.index('经营方式') + 1]
-    corpInfo['登记机关'] = newList[newList.index('登记机关') + 1]
-    corpInfo['受理机关'] = newList[newList.index('受理机关') + 1]
-    corpInfo['经营范围'] = newList[newList.index('经营范围') + 1]
+    corpInfo[corpName] = newList[newList.index(corpName) + 1]
+    corpInfo[registerId] = newList[newList.index(registerId) + 1]
+    corpInfo[legalRepre] = newList[newList.index(legalRepre) + 1]
+    corpInfo[residence] = newList[newList.index(residence) + 1]
+    corpInfo[registerCapital] = newList[newList.index(registerCapital) + 1]
+    corpInfo[economicNature] = newList[newList.index(economicNature) + 1]
+    corpInfo[corpState] = newList[newList.index(corpState) + 1]
+    corpInfo[businessMode] = newList[newList.index(businessMode) + 1]
+    corpInfo[registerAutho] = newList[newList.index(registerAutho) + 1]
+    corpInfo[administraveAutho] = newList[newList.index(administraveAutho) + 1]
+    corpInfo[businessScope] = newList[newList.index(businessScope) + 1]
 
     for (k, v) in corpInfo.items():
         print '['+unquote(k) +':' + unquote(v) + ']'
