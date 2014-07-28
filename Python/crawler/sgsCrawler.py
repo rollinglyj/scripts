@@ -86,9 +86,12 @@ def getSecondPage(formData, url, savedFile, refUrl):
     corpInfo[registerAutho] = newList[newList.index(registerAutho) + 1]
     corpInfo[administraveAutho] = newList[newList.index(administraveAutho) + 1]
     corpInfo[businessScope] = newList[newList.index(businessScope) + 1]
+    return corpInfo
 
-    for (k, v) in corpInfo.items():
+def displayDict(maps):
+    for (k, v) in maps.items():
         print '['+unquote(k) +':' + unquote(v) + ']'
+    
 
 
 
@@ -106,6 +109,8 @@ if __name__ == '__main__':
         getFirstPage(formData, url, savedFile)
     elif len(sys.argv)==2:
 #        getByCorpName(sys.argv[1])
-        getInfoByEtpsId(sys.argv[1])
+        corpInfo = getInfoByEtpsId(sys.argv[1])
+        displayDict(corpInfo)
+
     else:
         print "Usage: Python sgsCrawler.py <formData> <URL> <saveDFile> [<refUrl>]"
