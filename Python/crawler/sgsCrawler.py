@@ -20,9 +20,11 @@ from common_lib import *
 
 def etlToDB(corpName):
     etpsIdList = getByCorpName(corpName)
-    for id in etpsIdList:
-        dictInfo = getInfoByEtpsId(id)
-        insertDB(dictInfo)
+    if(len(etpsIdList) != 0):
+        for id in etpsIdList:
+            dictInfo = getInfoByEtpsId(id)
+            insertDB(dictInfo)
+            break
 
 '''
 Get detail corp info through etpsId
@@ -71,7 +73,7 @@ def getSecondPage(formData, url, savedFile, refUrl):
     crawlCmdRe = os.popen(crawlCmd2).readlines()
     strs = unquote(''.join(crawlCmdRe))
     i = 0
-    print crawlCmdRe
+    #print crawlCmdRe
     newList = []
     for li in crawlCmdRe:
         tmp = li.strip().replace(':','')
@@ -90,6 +92,7 @@ def getSecondPage(formData, url, savedFile, refUrl):
     corpInfo[registerAutho] = newList[newList.index(registerAutho) + 1]
     corpInfo[administraveAutho] = newList[newList.index(administraveAutho) + 1]
     corpInfo[businessScope] = newList[newList.index(businessScope) + 1]
+    displayDict(corpInfo)
     return corpInfo
 
 def displayDict(maps):

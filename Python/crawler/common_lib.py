@@ -26,6 +26,22 @@ administraveAutho = '受理机关'
 businessScope =  '经营范围'
 '''
 
+def displayInfo(recordNum):
+    try:
+        conn_local = MySQLdb.connect(host='localhost',user='root',passwd='MhxzKhl',db='corp_info',port=3306)
+        cur_local = conn_local.cursor()
+        cur_local.execute('select * from shanghai limit ' + recordNum)
+        results     = cur_local.fetchall();
+        for row in results:
+            for i in row:
+                print str(i)+ " ",
+            print    
+        conn_local.commit()
+        cur_local.close()
+        conn_local.close()
+    except MySQLdb.Error,e:
+        print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+
 def insertDB(dictData):
     try:
         conn_local = MySQLdb.connect(host='localhost',user='root',passwd='MhxzKhl',db='corp_info',port=3306)
