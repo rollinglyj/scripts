@@ -88,7 +88,7 @@ def getSecondPage(formData, url, savedFile, refUrl):
     corpInfo[registerCapital] = newList[newList.index(registerCapital) + 1]
     corpInfo[economicNature] = newList[newList.index(economicNature) + 1]
     corpInfo[corpState] = newList[newList.index(corpState) + 1]
-    corpInfo[businessMode] = newList[newList.index(businessMode) + 1]
+#    corpInfo[businessMode] = newList[newList.index(businessMode) + 1]
     corpInfo[registerAutho] = newList[newList.index(registerAutho) + 1]
     corpInfo[administraveAutho] = newList[newList.index(administraveAutho) + 1]
     corpInfo[businessScope] = newList[newList.index(businessScope) + 1]
