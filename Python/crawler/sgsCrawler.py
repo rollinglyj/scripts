@@ -18,6 +18,10 @@ from urllib import quote
 from common_data import *
 from common_lib import *
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+
 def etlToDB(corpName):
     etpsIdList = getByCorpName(corpName)
     if(len(etpsIdList) != 0):
@@ -95,10 +99,7 @@ def getSecondPage(formData, url, savedFile, refUrl):
     displayDict(corpInfo)
     return corpInfo
 
-def displayDict(maps):
-    for (k, v) in maps.items():
-        print '['+unquote(k) +':' + unquote(v) + ']'
-    
+
 
 
 

@@ -50,8 +50,5 @@ businessScope =  '经营范围'
 
 
 
-
-
-
 MYSQL_CORP_INFO='mysql -hlocalhost -uroot -pMhxzKhl -P3306 -D corp_info -e "'
 

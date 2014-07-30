@@ -14,6 +14,9 @@ import MySQLdb
 from urllib import quote, unquote
 from bs4 import BeautifulSoup
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 '''corpName = '企业名称'
 registerId = '注册号'
 legalRepre = '法定代表人'
