@@ -46,17 +46,47 @@ def getSecondPage(formData, url, savedFile, refUrl):
             newList.append(tmp)
     print newList
     corpInfo={}
-    corpInfo[corpName] = newList[newList.index(corpName) + 1]
-    corpInfo[registerId] = newList[newList.index(registerId) + 1]
-    corpInfo[legalRepre] = newList[newList.index(legalRepre) + 1]
-    corpInfo[residence] = newList[newList.index(residence) + 1]
-    corpInfo[registerCapital] = newList[newList.index(registerCapital) + 1]
-    corpInfo[economicNature] = newList[newList.index(economicNature) + 1]
-    corpInfo[corpState] = newList[newList.index(corpState) + 1]
-#    corpInfo[businessMode] = newList[newList.index(businessMode) + 1]
-    corpInfo[registerAutho] = newList[newList.index(registerAutho) + 1]
-    corpInfo[administraveAutho] = newList[newList.index(administraveAutho) + 1]
-    corpInfo[businessScope] = newList[newList.index(businessScope) + 1]
+    try:
+        corpInfo[corpName] = newList[newList.index(corpName) + 1]
+        corpInfo[registerId] = newList[newList.index(registerId) + 1]
+        
+        if(legalRepre in newList):
+            corpInfo[legalRepre] = newList[newList.index(legalRepre) + 1]
+        else:
+            corpInfo[legalRepre] = ""
+        if( residence in newList):
+            corpInfo[residence] = newList[newList.index(residence) + 1]
+        else:
+            corpInfo[residence] = ""
+        if (registerCapital in newList):
+            corpInfo[registerCapital] = newList[newList.index(registerCapital) + 1]
+        else:
+            corpInfo[registerCapital] = ""
+        
+        if( economicNature in newList):
+            corpInfo[economicNature] = newList[newList.index(economicNature) + 1]
+        else:
+            corpInfo[economicNature] = ""
+        corpInfo[corpState] = newList[newList.index(corpState) + 1]
+
+    #    corpInfo[businessMode] = newList[newList.index(businessMode) + 1]
+        if(registerAutho in newList):
+            corpInfo[registerAutho] = newList[newList.index(registerAutho) + 1]
+        else:
+            corpInfo[registerAutho] = ""
+        
+        if( administraveAutho in newList):
+            corpInfo[administraveAutho] = newList[newList.index(administraveAutho) + 1]
+        else:
+            corpInfo[administraveAutho] = ""
+
+        if(businessScope in newList):
+            corpInfo[businessScope] = newList[newList.index(businessScope) + 1]
+        else:
+            corpInfo[businessScope] = ""
+
+    except IndexError:
+        print 'Sorry, index out of range error'
     return corpInfo
 #    displayDict(corpInfo)
 
