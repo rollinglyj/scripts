@@ -109,7 +109,7 @@ def insertDB(dictData):
         '''
         values = []
 #        print values
-        values.append(dictData[corpName])
+        '''        values.append(dictData[corpName])
         values.append(dictData[registerId])
         values.append(dictData[legalRepre])
         values.append(dictData[residence])
@@ -121,7 +121,21 @@ def insertDB(dictData):
         values.append(dictData[registerAutho])
         values.append(dictData[administraveAutho])
         values.append(dictData[businessScope])
-            
+        '''            
+
+        values.append(getValue(corpName, dictData))
+        values.append(getValue(registerId, dictData))
+        values.append(getValue(legalRepre, dictData))
+        values.append(getValue(residence, dictData))
+        values.append(getValue(registerCapital, dictData))
+        values.append(getValue(economicNature, dictData))
+        values.append(getValue(corpState, dictData))
+#        values.append(dictData[businessMode])
+        values.append("")
+        values.append(getValue(registerAutho, dictData))
+        values.append(getValue(administraveAutho, dictData))
+        values.append(getValue(businessScope, dictData))
+
         cur_local.execute("insert into shanghai values(NULL,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",values)
         #print "invinsible seperator line-----------------------------------"
         conn_local.commit()
@@ -129,6 +143,11 @@ def insertDB(dictData):
         conn_local.close()
     except MySQLdb.Error,e:
         print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+def getValue(key, dictD):
+    if key in dictD:
+        return dictD[key]
+    else:
+        return ""
 
 def getFirstPage(formData, url, savedFile):
     etpsIdList=[]
